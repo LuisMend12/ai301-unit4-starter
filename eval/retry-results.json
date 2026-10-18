@@ -1,0 +1,275 @@
+{
+  "tool_dir": "C:\\Users\\Luis Mendez\\.claude\\skills\\pr-precheck",
+  "model": "sonnet",
+  "agreement": [
+    7,
+    7
+  ],
+  "results": [
+    {
+      "id": "pkg-01",
+      "verdict": "reject",
+      "failed_checks": [
+        "plan_fidelity",
+        "repo_checks_recorded",
+        "stated_standards"
+      ],
+      "checks": [
+        {
+          "name": "plan_fidelity",
+          "grade": "fail",
+          "evidence": "Plan says check capacity in tokenize_bytes bulk-copy paths; diff adds one guard at function entry (before padding occurs) and the description claims 'capacity check to the bulk-copy path'; no deviation recorded."
+        },
+        {
+          "name": "observable_test_evidence",
+          "grade": "pass",
+          "evidence": "Issue repro before 99999 vs after 100000 with shape (41, 5000); ASAN report on main, none on branch; parser suite 2841 passed incl. new test."
+        },
+        {
+          "name": "repo_checks_recorded",
+          "grade": "fail",
+          "evidence": "Template requires 'all code checks passed (pre-commit)'; test evidence reports only the pytest parser suite, no pre-commit run or stated blocker."
+        },
+        {
+          "name": "diff_reviewable",
+          "grade": "pass",
+          "evidence": "Diff is one C hunk plus one regression test; no debug leftovers, commented-out code, or unrelated edits."
+        },
+        {
+          "name": "stated_standards",
+          "grade": "fail",
+          "evidence": "Template asks for 'closes #xxxx' and a whatsnew entry; description has no issue link, and no whatsnew entry or pre-commit/type-annotation note appears."
+        }
+      ],
+      "error": null,
+      "gold": "reject",
+      "category": "standards-wall",
+      "calibration": false
+    },
+    {
+      "id": "pkg-04",
+      "verdict": "reject",
+      "failed_checks": [
+        "plan_fidelity",
+        "observable_test_evidence"
+      ],
+      "checks": [
+        {
+          "name": "plan_fidelity",
+          "grade": "fail",
+          "evidence": "Description says fallback uses 'the same flag set the successful probe path uses', but diff gives only [\"--RAW-CONTROL-CHARS\"] while probe-success arms also add --quit-if-one-screen/--no-init."
+        },
+        {
+          "name": "observable_test_evidence",
+          "grade": "fail",
+          "evidence": "Only 'colors work now in paging mode. `cargo test` passes.' with no named scenario, no before/after, no control comparison; windows-only unit test result not reported."
+        },
+        {
+          "name": "repo_checks_recorded",
+          "grade": "pass",
+          "evidence": "Repo asks for tests and a CHANGELOG entry (no named command); '`cargo test` passes' is reported and the CHANGELOG.md entry is in the diff."
+        },
+        {
+          "name": "diff_reviewable",
+          "grade": "pass",
+          "evidence": "Single commented fallback arm, one test, one changelog line; unchanged arms appear as identical -/+ text only, no debug or unrelated edits."
+        },
+        {
+          "name": "stated_standards",
+          "grade": "pass",
+          "evidence": "No PR template or AI policy; contribution guide's tests and CHANGELOG asks are met, and the changelog entry references #3833."
+        }
+      ],
+      "error": null,
+      "gold": "reject",
+      "category": "not-tested",
+      "calibration": false
+    },
+    {
+      "id": "pkg-07",
+      "verdict": "reject",
+      "failed_checks": [
+        "observable_test_evidence"
+      ],
+      "checks": [
+        {
+          "name": "plan_fidelity",
+          "grade": "pass",
+          "evidence": "Diff groups edits by fset.File(edit.Pos) and warns/skips unresolvable positions, matching the plan's single bounded change; description states the same and claims nothing extra"
+        },
+        {
+          "name": "observable_test_evidence",
+          "grade": "fail",
+          "evidence": "Only the single-file control (`golangci-lint run --fix ./onefile/ && go build`) is shown; the two-file a.go/b.go repro is never re-run on the branch, and the added unit test groups two edits in a.go only"
+        },
+        {
+          "name": "repo_checks_recorded",
+          "grade": "pass",
+          "evidence": "Repo facts name no required command; `go test ./pkg/goanalysis/...` is reported as passing"
+        },
+        {
+          "name": "diff_reviewable",
+          "grade": "pass",
+          "evidence": "Diff is one function rewrite plus one test with no debug leftovers, dead code, or unrelated churn"
+        },
+        {
+          "name": "stated_standards",
+          "grade": "pass",
+          "evidence": "Template asks only for a brief description (present); no stated AI policy; the thread has no maintainer direction beyond 'give the fix a try'"
+        }
+      ],
+      "error": null,
+      "gold": "reject",
+      "category": "not-tested",
+      "calibration": false
+    },
+    {
+      "id": "pkg-08",
+      "verdict": "accept",
+      "failed_checks": [],
+      "checks": [
+        {
+          "name": "plan_fidelity",
+          "grade": "pass",
+          "evidence": "Diff touches only files_controller.go, i18n english.go, and one integration test, and adds only the AnyTrackedChanges guard that raises the error; no fallback prompt or stash-semantics change, matching the plan's exclusions; description matches the diff."
+        },
+        {
+          "name": "observable_test_evidence",
+          "grade": "pass",
+          "evidence": "Test evidence gives before ('Stash name' prompt, nothing stashed) and after (toast, no prompt, untracked.txt still listed), the tracked-change control, and 'Integration test stash_untracked_only_errors passes'."
+        },
+        {
+          "name": "repo_checks_recorded",
+          "grade": "pass",
+          "evidence": "Reports 'go test ./... passes' and 'go generate ./... produces no cheatsheet diff'; description records formatting, i18n, and no UserConfig changes; the repo states no further required commands."
+        },
+        {
+          "name": "diff_reviewable",
+          "grade": "pass",
+          "evidence": "Diff is one guard, one i18n string, and one test; no debug leftovers, dead code, or unrelated cleanup."
+        },
+        {
+          "name": "stated_standards",
+          "grade": "pass",
+          "evidence": "Description has the 'PR Description' section and answers every requirements-checklist item, links #5883, and the repo states no AI policy; no maintainer direction in the thread is left unaddressed."
+        }
+      ],
+      "error": null,
+      "gold": "accept",
+      "category": "clear-accept",
+      "calibration": false
+    },
+    {
+      "id": "pkg-11",
+      "verdict": "accept",
+      "failed_checks": [],
+      "checks": [
+        {
+          "name": "plan_fidelity",
+          "grade": "pass",
+          "evidence": "Diff touches only gitignore.rs plus in-file tests; helper stops trim at a space preceded by an odd number of backslashes, exactly the planned bounded change; description matches the diff."
+        },
+        {
+          "name": "observable_test_evidence",
+          "grade": "pass",
+          "evidence": "Repro re-run: before 'dangling \\'' error, after 'rg hi' searches normally and rg --files does not list 'foo ' (git parity); in-file test asserts matched(\"foo \") is ignore."
+        },
+        {
+          "name": "repo_checks_recorded",
+          "grade": "pass",
+          "evidence": "'cargo test -p ignore passes (214 tests)' reported; repo facts name no other required command."
+        },
+        {
+          "name": "diff_reviewable",
+          "grade": "pass",
+          "evidence": "Single commit 6b93e11; call-site swap, one helper, one test; no debug prints, dead code, or unrelated edits."
+        },
+        {
+          "name": "stated_standards",
+          "grade": "pass",
+          "evidence": "No PR template; tests added per contribution docs, issue linked (#3477), AI-assistance disclosure present in own words; thread comment is not maintainer direction."
+        }
+      ],
+      "error": null,
+      "gold": "accept",
+      "category": "clear-accept",
+      "calibration": false
+    },
+    {
+      "id": "pkg-13",
+      "verdict": "accept",
+      "failed_checks": [],
+      "checks": [
+        {
+          "name": "plan_fidelity",
+          "grade": "pass",
+          "evidence": "Diff touches only ui.lua and ui_spec.lua and escapes `& | ^ < >` as planned; description and code comment both disclose the planned %VAR% deferral."
+        },
+        {
+          "name": "observable_test_evidence",
+          "grade": "pass",
+          "evidence": "Repro re-run on branch: before code=1 'her 't' is not recognized' with truncated URL; after code=0, empty stderr, browser shows ?q=hello&t=brave."
+        },
+        {
+          "name": "repo_checks_recorded",
+          "grade": "pass",
+          "evidence": "Repo facts name no specific command; the ui functional spec run (make functionaltest with TEST_FILE=ui_spec.lua) is reported passing including the new case."
+        },
+        {
+          "name": "diff_reviewable",
+          "grade": "pass",
+          "evidence": "Single gsub-based hunk plus one regression test; no debug code, dead code, unrelated edits or formatting churn."
+        },
+        {
+          "name": "stated_standards",
+          "grade": "pass",
+          "evidence": "Description has Problem and Solution sections, links #41337, conventional fix(ui) title; no AI policy stated in repo facts; test added for behavior change."
+        }
+      ],
+      "error": null,
+      "gold": "accept",
+      "category": "clear-accept",
+      "calibration": false
+    },
+    {
+      "id": "pkg-20",
+      "verdict": "reject",
+      "failed_checks": [
+        "plan_fidelity",
+        "observable_test_evidence",
+        "stated_standards"
+      ],
+      "checks": [
+        {
+          "name": "plan_fidelity",
+          "grade": "fail",
+          "evidence": "Description says 'a second case covers the single-theme scheme flip', but the added second test covers unrelated keys (.fullscreen); the rewritten existing test covers the flip."
+        },
+        {
+          "name": "observable_test_evidence",
+          "grade": "fail",
+          "evidence": "Test evidence says 'Expected-after per the plan: ?997;1n' and the conditional-pair control is stated as expected only, with no run or result."
+        },
+        {
+          "name": "repo_checks_recorded",
+          "grade": "pass",
+          "evidence": "'zig build test passes (config suite included)' is named in the description and evidence; the repo facts name no other required command."
+        },
+        {
+          "name": "diff_reviewable",
+          "grade": "pass",
+          "evidence": "Single guard change with an explanatory comment plus test updates; no debug leftovers, dead code, or unrelated edits."
+        },
+        {
+          "name": "stated_standards",
+          "grade": "fail",
+          "evidence": "AI_POLICY.md requires disclosure of all AI usage (tool and extent), and the title and description contain no AI-use disclosure; the issue is linked via #13604."
+        }
+      ],
+      "error": null,
+      "gold": "reject",
+      "category": "standards-wall",
+      "calibration": false
+    }
+  ]
+}

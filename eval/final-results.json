@@ -2,8 +2,8 @@
   "tool_dir": "C:\\Users\\Luis Mendez\\.claude\\skills\\pr-precheck",
   "model": "sonnet",
   "agreement": [
-    14,
-    14
+    19,
+    20
   ],
   "results": [
     {
@@ -18,27 +18,27 @@
         {
           "name": "plan_fidelity",
           "grade": "fail",
-          "evidence": "Plan says check in the bulk-copy paths of tokenize_bytes; diff adds one guard at function entry before the existing make_stream_space call, with no deviation recorded, while the description claims 'a capacity check to the bulk-copy path'."
+          "evidence": "Description says it 'adds a capacity check to the bulk-copy path', but the diff adds one entry check at the top of tokenize_bytes that duplicates the following make_stream_space call, and no deviation is recorded."
         },
         {
           "name": "observable_test_evidence",
           "grade": "pass",
-          "evidence": "Repro before/after: len 99999 on main vs 100000 on branch; ASAN heap-buffer-overflow on main, none on branch; new regression test included in 'pytest pandas/tests/io/parser -q' (2841 passed, 40 skipped)."
+          "evidence": "Repro before (len 99999) vs after (100000), ASAN report on main vs none on branch, new regression test, parser suite 2841 passed."
         },
         {
           "name": "repo_checks_recorded",
           "grade": "fail",
-          "evidence": "Template requires 'all code checks passed (pre-commit)'; test evidence reports only the parser suite and no pre-commit run or stated reason it was skipped."
+          "evidence": "Template requires pre-commit code checks; no pre-commit run or blocker is reported anywhere in the test evidence or description."
         },
         {
           "name": "diff_reviewable",
           "grade": "pass",
-          "evidence": "Diff is one C hunk plus one regression test with no debug leftovers, unrelated cleanup or churn; the guard looks redundant with the following make_stream_space call, but that does not obscure the change."
+          "evidence": "Single C hunk plus one regression test; no unrelated edits, debug leftovers, commented-out code or formatting churn."
         },
         {
           "name": "stated_standards",
           "grade": "fail",
-          "evidence": "Description has no 'closes #66657' link and no whatsnew entry (both template asks) and says nothing on type annotations; no AI policy is stated, so none is required."
+          "evidence": "Description has no 'closes #66657' link and the diff has no whatsnew entry, both required by the PR template; maintainer's end_line suggestion is not addressed."
         }
       ],
       "error": null,
@@ -54,27 +54,27 @@
         {
           "name": "plan_fidelity",
           "grade": "pass",
-          "evidence": "Diff exports with clear=False, writes, then clears only if clear in save_text/save_html/save_svg; files match plan; description says 'No API or default changes'"
+          "evidence": "All three save_* methods export with clear=False and clear after write, in the plan's files only; description says 'No API or default changes', matching the diff"
         },
         {
           "name": "observable_test_evidence",
           "grade": "pass",
-          "evidence": "Repro before (v15.0.0) ends with '' and branch ends with 'IMPORTANT OUTPUT\\n'; new test also asserts successful save clears; pytest 1462 passed, 12 skipped"
+          "evidence": "Repro before: '' after failed save; after (branch): 'IMPORTANT OUTPUT\\n'; new test checks the successful save still clears; pytest 1462 passed"
         },
         {
           "name": "repo_checks_recorded",
           "grade": "pass",
-          "evidence": "Repo facts name no required command; '`pytest tests/ -q` passes (1462 passed, 12 skipped)' reported with outcome"
+          "evidence": "Repo facts name no explicit test command; pytest tests/ -q reported passing (1462 passed, 12 skipped)"
         },
         {
           "name": "diff_reviewable",
           "grade": "pass",
-          "evidence": "Only the three-method fix, one regression test and a CHANGELOG entry; no debug, dead code, unrelated cleanup or formatting churn"
+          "evidence": "Only the three save_* edits, one regression test and the CHANGELOG entry; no debug code, dead code, unrelated cleanup or churn"
         },
         {
           "name": "stated_standards",
           "grade": "pass",
-          "evidence": "'Type of changes: Bug fix.' present; CHANGELOG.md entry added linking #4208; issue referenced; no AI policy stated in repo facts"
+          "evidence": "'Type of changes: Bug fix' present, CHANGELOG.md entry added with #4208 link, issue referenced in description; no AI policy stated in repo facts"
         }
       ],
       "error": null,
@@ -93,27 +93,27 @@
         {
           "name": "plan_fidelity",
           "grade": "fail",
-          "evidence": "Diff adds a truncate() rewrite and a `resolve_symlinks` config option outside the plan's one-change scope and 'no config surface change' exclusion, while the description claims 'Implements the posted plan exactly' and 'No other behavior changes'; the planned module test is absent from the diff."
+          "evidence": "Diff adds a `resolve_symlinks` config option and rewrites `truncate()`, both outside the plan and its stated exclusions (symlink resolution, config surface); the description claims \"Implements the posted plan exactly\" and \"No other behavior changes\"."
         },
         {
           "name": "observable_test_evidence",
           "grade": "pass",
-          "evidence": "Before/after at the symlink: '(empty)' becomes '~/projects/app-dir'; physical path reported unchanged; 'cargo test directory passes (34 tests)'."
+          "evidence": "Symlink repro shows before `(empty)` and after `~/projects/app-dir`, physical path unchanged, `cargo test directory` passes (34 tests)."
         },
         {
           "name": "repo_checks_recorded",
           "grade": "pass",
-          "evidence": "The repo facts list only a template testing section and name no required command; `cargo test directory` is reported with its outcome."
+          "evidence": "Repo facts name no required command beyond the template's testing section; `cargo test directory` was run and its result reported."
         },
         {
           "name": "diff_reviewable",
           "grade": "fail",
-          "evidence": "Unrelated edits obscure the one-hunk fix: truncate() rewrite (5b77a1f) and the new `resolve_symlinks` option in both config and module files (c2ee8d8)."
+          "evidence": "Unrelated `truncate` refactor (5b77a1f) and `resolve_symlinks` option (c2ee8d8) obscure the one-line fallback fix."
         },
         {
           "name": "stated_standards",
           "grade": "pass",
-          "evidence": "Conventional-commit title 'fix(directory): ...', 'Closes #7648' under Motivation and Context, a How Has This Been Tested section; no AI policy stated in the repo facts and the thread has no comments."
+          "evidence": "Conventional-commit title, Motivation and Context with `Closes #7648`, and a How Has This Been Tested section are present; no AI policy is stated."
         }
       ],
       "error": null,
@@ -125,34 +125,33 @@
       "id": "pkg-04",
       "verdict": "reject",
       "failed_checks": [
-        "plan_fidelity",
         "observable_test_evidence"
       ],
       "checks": [
         {
           "name": "plan_fidelity",
-          "grade": "fail",
-          "evidence": "Description says the fallback uses \"the same flag set the successful probe path uses\", but the diff's fallback is only [\"--RAW-CONTROL-CHARS\"] while the successful arms also add --quit-if-one-screen / --no-init."
+          "grade": "pass",
+          "evidence": "Sole behavioral hunk `None if cfg!(windows) => vec![\"--RAW-CONTROL-CHARS\"]` matches the plan's bounded Windows-fallback change; the description's 'same flag set' wording is loose but does not misstate delivered scope."
         },
         {
           "name": "observable_test_evidence",
           "grade": "fail",
-          "evidence": "Test evidence is only \"colors work now in paging mode. `cargo test` passes.\" It names no before/after scenario, no output, and no comparison with the `--pager=\"less -R\"` control."
+          "evidence": "Test evidence is only 'colors work now in paging mode. `cargo test` passes.' It names no scenario or command, no before/after, and no result for the new unit test."
         },
         {
           "name": "repo_checks_recorded",
           "grade": "pass",
-          "evidence": "Repo facts require tests and a CHANGELOG entry and name no specific command; the diff adds both and evidence reports `cargo test` passing."
+          "evidence": "Repo asks for tests with behavior changes and a CHANGELOG entry; `cargo test` is reported passing, and the test and CHANGELOG entry are both in the diff."
         },
         {
           "name": "diff_reviewable",
           "grade": "pass",
-          "evidence": "Small diff: one match arm in src/pager.rs, one cfg(windows) test, one CHANGELOG line; no debug leftovers, dead code, or unrelated edits."
+          "evidence": "One logic hunk in src/pager.rs, one test, one CHANGELOG line; no debug leftovers, dead code, unrelated edits, or formatting churn."
         },
         {
           "name": "stated_standards",
           "grade": "pass",
-          "evidence": "No PR template or AI policy in repo facts; contribution guide asks for tests and a CHANGELOG entry, both present, and the entry cites #3833."
+          "evidence": "No PR template or AI policy exists; test and CHANGELOG asks are met, and the changelog entry says 'see #3833'."
         }
       ],
       "error": null,
@@ -168,27 +167,27 @@
         {
           "name": "plan_fidelity",
           "grade": "pass",
-          "evidence": "Match key widened to (name, mode, modifier, keycode) plus warn_once on same-key replace, exactly the plan's bounded scope; no uniqueness enforcement; description matches the diff"
+          "evidence": "Diff widens match to (name, mode, modifier, keycode) and adds warn_once on same-key replace, exactly as planned; description states the same and notes no renaming/uniqueness enforcement."
         },
         {
           "name": "observable_test_evidence",
           "grade": "pass",
-          "evidence": "Issue repro shown before (only 'up' row on 0.115.0) and after (control char_r + none up rows on branch); same-key warning covered by the passing same_name_same_key_replaces_with_warning test"
+          "evidence": "Issue repro before (0.115.0: only up row) vs after (branch: control/char_r and none/up rows); same-key warning covered by test same_name_same_key_replaces_with_warning in the passing suite."
         },
         {
           "name": "repo_checks_recorded",
           "grade": "pass",
-          "evidence": "'cargo test -p nu-protocol passes (312 tests); fmt and clippy clean' covers the cargo fmt/clippy/cargo test named in CONTRIBUTING"
+          "evidence": "\"cargo test -p nu-protocol passes (312 tests); fmt and clippy clean\" covers the cargo fmt, clippy, cargo test commands in CONTRIBUTING."
         },
         {
           "name": "diff_reviewable",
           "grade": "pass",
-          "evidence": "Single focused hunk in keybindings.rs plus two tests; no debug leftovers, dead code, or unrelated cleanup"
+          "evidence": "Single focused merge-loop change plus two tests; no debug leftovers, dead or commented-out code, or unrelated edits."
         },
         {
           "name": "stated_standards",
           "grade": "pass",
-          "evidence": "Description and 'User-facing changes:' sections present, #18848 referenced, fdncred and kronberger-droid thread points addressed; no AI policy stated so none required"
+          "evidence": "Description covers problem/approach/technical details and a User-facing changes section; cites #18848; addresses fdncred and kronberger-droid thread points; no AI policy stated."
         }
       ],
       "error": null,
@@ -208,27 +207,27 @@
         {
           "name": "plan_fidelity",
           "grade": "fail",
-          "evidence": "Commit 06f14dd adds MenuFollowsWindowTheme to GlobalAppSettings.idl and b3c50f8 renames members, both outside the plan's IslandWindow.cpp/.h scope, yet the description claims \"No functional changes outside the system menu fix.\""
+          "evidence": "Diff adds MenuFollowsWindowTheme to GlobalAppSettings.idl and renames members in Initialize(), though the plan scopes only IslandWindow.cpp/.h and excludes settings surface; description claims 'No functional changes outside the system menu fix.'"
         },
         {
           "name": "observable_test_evidence",
           "grade": "pass",
-          "evidence": "\"system dark + Terminal dark now shows a dark system menu; switching the Terminal theme to light flips it back\" with before/after screenshots and Terminal.Unit.Tests 0 failures."
+          "evidence": "'Repro re-run (alt+space) on the branch: system dark + Terminal dark now shows a dark system menu; switching the Terminal theme to light flips it back' with before/after screenshots."
         },
         {
           "name": "repo_checks_recorded",
           "grade": "pass",
-          "evidence": "Template/repo ask is tests passed; \"Terminal.Unit.Tests pass locally (0 failures)\" names the check and its outcome."
+          "evidence": "'Terminal.Unit.Tests pass locally (0 failures)' is a named check with an outcome; the repo facts name no other required command."
         },
         {
           "name": "diff_reviewable",
           "grade": "fail",
-          "evidence": "Diff includes rename-only hunk (_themeChangedRevoker -> _themeRevoker, _makeFrameBrush -> _MakeChromeBrush) and an unrelated IDL setting alongside the menu fix."
+          "evidence": "Rename hunk in Initialize() (_themeChangedRevoker -> _themeRevoker, _frameBrush -> _chromeBrush) and the unrelated .idl setting obscure the menu fix; commits b3c50f8 and 06f14dd are unrelated to the issue."
         },
         {
           "name": "stated_standards",
           "grade": "fail",
-          "evidence": "Checklist says \"schema n/a\" and \"documentation n/a\" while the diff adds a new setting to GlobalAppSettings.idl, so the N/A is unjustified despite \"closes #20507\" and the documented-API approach."
+          "evidence": "Checklist says 'schema n/a' while the diff adds a new global setting, and the description never mentions it; 'tests added' is unaddressed."
         }
       ],
       "error": null,
@@ -246,27 +245,27 @@
         {
           "name": "plan_fidelity",
           "grade": "pass",
-          "evidence": "Diff groups edits by fset.File(edit.Pos) and warns/skips unresolvable ones, exactly as planned; description matches; only runner_fix.go and its test touched"
+          "evidence": "Diff groups edits by resolved file and warns/skips unresolvable positions, exactly the plan's scope; description states the same and claims nothing extra."
         },
         {
           "name": "observable_test_evidence",
           "grade": "fail",
-          "evidence": "Only 'Verified the fix on a single-file case' (./onefile/); the planned two-file repro (a.go + b.go, go build ./...) has no branch result, and the unit test only asserts two a.go edits form one group"
+          "evidence": "Only the one-file control is shown (exit 0); the planned two-file repro (a.go/b.go rewritten, go build ./... passes) was never re-run, and the unit test uses a single file and an undefined helper."
         },
         {
           "name": "repo_checks_recorded",
           "grade": "pass",
-          "evidence": "Repo facts name no required test command; 'go test ./pkg/goanalysis/... passes' is reported"
+          "evidence": "Repo facts name no required test/validation command; 'go test ./pkg/goanalysis/... passes' is reported."
         },
         {
           "name": "diff_reviewable",
           "grade": "pass",
-          "evidence": "Focused hunks in runner_fix.go plus one test; no debug leftovers, dead code, or unrelated churn"
+          "evidence": "Single focused hunk in runner_fix.go plus one test; no debug leftovers, dead code, or unrelated churn."
         },
         {
           "name": "stated_standards",
           "grade": "pass",
-          "evidence": "Template asks for a brief description, which is present; no issue-link requirement or AI policy stated in repo facts"
+          "evidence": "Template asks for a brief description, which is provided; repo facts state no issue-link or AI-policy requirement and the thread has no maintainer direction."
         }
       ],
       "error": null,
@@ -282,27 +281,27 @@
         {
           "name": "plan_fidelity",
           "grade": "pass",
-          "evidence": "Diff touches only files_controller.go, english.go and one integration test, matching the plan's files; adds the pre-prompt tracked-changes guard and no fallback flow; description matches the diff."
+          "evidence": "Diff touches only files_controller.go, i18n english.go, and one integration test, as planned; the description says only that the dead-end prompt no longer opens, and no fallback flow is added."
         },
         {
           "name": "observable_test_evidence",
           "grade": "pass",
-          "evidence": "before: 's -> Stash name prompt -> Enter -> nothing'; after: toast shown, no prompt, untracked.txt still listed; tracked-change control still stashes; integration test stash_untracked_only_errors passes."
+          "evidence": "Before: prompt then nothing, empty stash list. After: toast, no prompt, untracked.txt still listed. Tracked-change control still stashes; integration test stash_untracked_only_errors passes."
         },
         {
           "name": "repo_checks_recorded",
           "grade": "pass",
-          "evidence": "'go test ./... passes; go generate ./... produces no cheatsheet diff'; integration test result reported; formatting, i18n and UserConfig items answered in the description's Requirements line."
+          "evidence": "'go test ./... passes; go generate ./... produces no cheatsheet diff'; integration test passes."
         },
         {
           "name": "diff_reviewable",
           "grade": "pass",
-          "evidence": "Three small hunks (guard, i18n key, test) with no debug code, dead code, unrelated cleanup or churn."
+          "evidence": "Diff is a guard clause, one i18n string, and one new test; no debug code, dead code, or unrelated edits."
         },
         {
           "name": "stated_standards",
           "grade": "pass",
-          "evidence": "Description has PR Description plus Requirements covering cheatsheets, formatting, tests, i18n and 'no UserConfig changes'; links #5883; repo has no AI policy; thread has no maintainer direction."
+          "evidence": "Description references #5883 and the posted plan and answers each template requirement (cheatsheets, formatting, test, i18n, no UserConfig); no AI policy is stated in repo facts."
         }
       ],
       "error": null,
@@ -315,6 +314,7 @@
       "verdict": "reject",
       "failed_checks": [
         "plan_fidelity",
+        "observable_test_evidence",
         "diff_reviewable",
         "stated_standards"
       ],
@@ -322,27 +322,27 @@
         {
           "name": "plan_fidelity",
           "grade": "fail",
-          "evidence": "Plan says 'Not in scope: new flags, other error messages'; diff adds --time-format flag, rewrites help text, trims periods globally in error.rs, yet description claims 'exactly as planned'"
+          "evidence": "Diff adds a new `--time-format` flag and rewords help text, though the plan excludes 'new flags, other error messages'; the description says 'exactly as planned'."
         },
         {
           "name": "observable_test_evidence",
-          "grade": "pass",
-          "evidence": "Branch run shows 2025-11-31 -> 'input is out of range (is the day valid for that month?)' and yesterdayy -> 'expected formats: ...', distinct per failure kind vs plan's generic original"
+          "grade": "fail",
+          "evidence": "The branch repro shows the new wording for both cases, but the plan's per-failure-kind unit tests are absent from the diff with no result or limitation stated."
         },
         {
           "name": "repo_checks_recorded",
           "grade": "pass",
-          "evidence": "'cargo test passes (612 tests)'; repo facts name no other required command"
+          "evidence": "'`cargo test` passes (612 tests)'; no other required check is stated in the repo facts."
         },
         {
           "name": "diff_reviewable",
           "grade": "fail",
-          "evidence": "Unrelated hunks: --time-format flag in Opts, help-text rewording, trim_end_matches('.') in src/error.rs; commit 7a95d33 'harmonize error message wording across flags'"
+          "evidence": "Unrelated hunks: `--time-format` option, help-text rewording, and global period trimming in src/error.rs, via commits 7a95d33 and 3d0c6b1."
         },
         {
           "name": "stated_standards",
           "grade": "fail",
-          "evidence": "Description says 'CHANGELOG entry added' but diff has no CHANGELOG.md change; no tests added despite guide asking tests with behavior changes and plan promising one per failure kind"
+          "evidence": "The contribution guide asks for tests and a CHANGELOG.md entry. The description says 'CHANGELOG entry added', but the diff has no CHANGELOG.md change and no tests."
         }
       ],
       "error": null,
@@ -361,27 +361,27 @@
         {
           "name": "plan_fidelity",
           "grade": "pass",
-          "evidence": "Diff touches only shim-init-node.ts and its test, sets autoSelectFamilyAttemptTimeout 2000 on both agents as planned; description 'keeping Happy Eyeballs enabled' matches."
+          "evidence": "Diff changes only shim-init-node.ts agents (2000 ms, Happy Eyeballs kept) plus one unit test, matching the plan's scope and files; description states exactly that."
         },
         {
           "name": "observable_test_evidence",
           "grade": "fail",
-          "evidence": "Only 'a full day of WebDAV syncs against Koofr' with no ~350 ms delayed-connect repro, no before/after, and no result for the new unit test; 'no further testing seemed necessary'."
+          "evidence": "Only \"a full day of WebDAV syncs against Koofr ... zero ETIMEDOUT\" and \"no further testing seemed necessary\"; the planned 350 ms delayed-connect repro was never re-run, so there is no before/after result for the original scenario."
         },
         {
           "name": "repo_checks_recorded",
           "grade": "fail",
-          "evidence": "Contributing guide asks for yarn test and the plan lists it, but no run, outcome, or blocker is reported."
+          "evidence": "Contributing guide asks for yarn test; test evidence and description report no run, outcome, or blocker for it."
         },
         {
           "name": "diff_reviewable",
           "grade": "pass",
-          "evidence": "Two agent-option additions, one relevant comment, one focused unit test; no unrelated edits or debug leftovers."
+          "evidence": "Diff is two agent options with an explanatory comment plus one asserting unit test; no unrelated edits, debug code, or churn."
         },
         {
           "name": "stated_standards",
           "grade": "pass",
-          "evidence": "No PR template or AI policy exists; 'Fixes #16215' links the issue and the change is minimal."
+          "evidence": "No PR template or AI policy exists; description has \"Fixes #16215\" and the change is minimal as the guide asks."
         }
       ],
       "error": null,
@@ -391,33 +391,35 @@
     },
     {
       "id": "pkg-11",
-      "verdict": "accept",
-      "failed_checks": [],
+      "verdict": "reject",
+      "failed_checks": [
+        "plan_fidelity"
+      ],
       "checks": [
         {
           "name": "plan_fidelity",
-          "grade": "pass",
-          "evidence": "Diff adds trim_unescaped_trailing_spaces stopping at a space preceded by an odd number of backslashes, in gitignore.rs plus same-file tests, matching the plan; no out-of-scope behavior and no missing promised work."
+          "grade": "fail",
+          "evidence": "Description claims tests for 'escaped, unescaped, and double-backslash cases' and 'One function touched', but the added test covers only escaped and double-backslash cases, and two functions are touched (parse_gitignore_line modified, trim_unescaped_trailing_spaces added)"
         },
         {
           "name": "observable_test_evidence",
           "grade": "pass",
-          "evidence": "Repro re-run on the branch: before 'dangling \\'' error, after 'searches normally, no error' and `rg --files` does not list 'foo ', matching git check-ignore; unit tests assert foo\\ plus spaces matches 'foo '."
+          "evidence": "Repro before: dangling '\\' error; after: no error and 'foo ' not listed by rg --files; cargo test -p ignore passes (214 tests)"
         },
         {
           "name": "repo_checks_recorded",
           "grade": "pass",
-          "evidence": "'cargo test -p ignore passes (214 tests)' reported; repo states no other required suite or template checks."
+          "evidence": "Plan's required check 'cargo test -p ignore' reported as passing with 214 tests; repo has no PR template or other stated required commands"
         },
         {
           "name": "diff_reviewable",
           "grade": "pass",
-          "evidence": "Single commit; diff contains only the trim helper, the call-site change, a comment, and a focused test; no debug code, dead code, or churn."
+          "evidence": "Diff is a single trim replacement, one helper function, and one test; no debug leftovers, dead code, or unrelated churn"
         },
         {
           "name": "stated_standards",
           "grade": "pass",
-          "evidence": "No PR template in repo; description links #3477, is focused with tests added, and includes the AI-use disclosure ('AI-assisted with me reviewing and understanding every line... in my own words')."
+          "evidence": "Issue #3477 linked in description; AI-assisted disclosure present in own words per AI_POLICY.md; tests included as CONTRIBUTING asks; no PR template exists"
         }
       ],
       "error": null,
@@ -437,27 +439,27 @@
         {
           "name": "plan_fidelity",
           "grade": "fail",
-          "evidence": "Diff adds an unrelated TODO comment, an unused _unused_buffer_probe fn, and loop whitespace churn outside the plan's scope; description claims 'CHANGELOG entry included' but the diff has no CHANGELOG.md hunk"
+          "evidence": "Description says \"CHANGELOG entry included\" but the diff has no CHANGELOG hunk; it also adds an unplanned dead function `_unused_buffer_probe` and a loop rewrite."
         },
         {
           "name": "observable_test_evidence",
           "grade": "pass",
-          "evidence": "Branch repro of ':-18446744073709551614' prints l1/l2 with exit 0 vs the original capacity-overflow exit 101; new test asserts .success().stdout(\"l1\\nl2\\n\")"
+          "evidence": "Branch repro prints `l1`/`l2` with exit 0 versus the issue's `capacity overflow` exit 101; the new test asserts success and stdout."
         },
         {
           "name": "repo_checks_recorded",
           "grade": "pass",
-          "evidence": "'cargo test passes (integration suite includes the new regression test)' is the only repo-stated check and is reported with an outcome"
+          "evidence": "\"`cargo test` passes (integration suite includes the new regression test)\"; the repo names no other required command."
         },
         {
           "name": "diff_reviewable",
           "grade": "fail",
-          "evidence": "Commented-out '// eprintln!(\"DBG buffer_size ...\")', commented-out first-attempt allocation, dead fn _unused_buffer_probe, unrelated '// TODO: ring buffer?', whitespace-only rewrite of the while loop"
+          "evidence": "The diff contains `// eprintln!(\"DBG buffer_size...\")`, a commented-out alternative implementation, the dead `_unused_buffer_probe` function, `// TODO: ring buffer?`, and a whitespace-only `while` loop rewrite."
         },
         {
           "name": "stated_standards",
           "grade": "fail",
-          "evidence": "Contribution guide asks for a CHANGELOG.md entry; the diff contains none although the description says it is included (the issue link 'Fixes #3845' and the test requirement are met)"
+          "evidence": "The contribution guide asks for a CHANGELOG.md entry, but the diff contains none and the description wrongly claims one is included."
         }
       ],
       "error": null,
@@ -473,27 +475,27 @@
         {
           "name": "plan_fidelity",
           "grade": "pass",
-          "evidence": "Diff touches only ui.lua and ui_spec.lua and escapes `& | ^ < >` as planned; `%VAR%` deferral is in the plan, the code comment and the description."
+          "evidence": "Diff caret-escapes `& | ^ < >` in only ui.lua and ui_spec.lua, matching the plan; description and code comment disclose the `%VAR%` deferral the plan recorded."
         },
         {
           "name": "observable_test_evidence",
           "grade": "pass",
-          "evidence": "Repro before `code = 1` / browser shows `?q=hello`; after `code = 0` / browser shows `?q=hello&t=brave`; new spec asserts `...?q=hello^&t=x`."
+          "evidence": "Same repro before/after: code=1 with `'t' is not recognized` becomes code=0 with browser at `?q=hello&t=brave`; ui_spec functional run passes including new case."
         },
         {
           "name": "repo_checks_recorded",
           "grade": "pass",
-          "evidence": "`TEST_FILE=test/functional/lua/ui_spec.lua make functionaltest` reported as passing including the new case; repo facts name no other required command."
+          "evidence": "`TEST_FILE=test/functional/lua/ui_spec.lua make functionaltest` reported passing; tests added for the behavior change and commit message follows `fix(ui):` convention; repo names no other required command."
         },
         {
           "name": "diff_reviewable",
           "grade": "pass",
-          "evidence": "Single gsub fix with an explanatory comment plus one related test; no debug code, dead code, unrelated cleanup or formatting churn."
+          "evidence": "Single-line fix plus explanatory comment and one test; no debug code, dead code, unrelated cleanup, or formatting churn."
         },
         {
           "name": "stated_standards",
           "grade": "pass",
-          "evidence": "Description has Problem and Solution sections matching the template, references #41337, and follows `fix(ui):` convention; no AI policy or maintainer thread direction to address."
+          "evidence": "Description has Problem and Solution sections and references #41337; repo states no AI policy and thread has no maintainer direction."
         }
       ],
       "error": null,
@@ -508,34 +510,33 @@
         "plan_fidelity",
         "observable_test_evidence",
         "repo_checks_recorded",
-        "diff_reviewable",
-        "stated_standards"
+        "diff_reviewable"
       ],
       "checks": [
         {
           "name": "plan_fidelity",
           "grade": "fail",
-          "evidence": "Only test added is test_header_casing_preserved, but plan puts 'header casing' out of scope; description says 'Tests added; all tests pass' while nothing tests the Content-Type fix."
+          "evidence": "Added test_header_casing_preserved covers header casing, which the plan lists as out of scope; description doesn't disclose it"
         },
         {
           "name": "observable_test_evidence",
           "grade": "fail",
-          "evidence": "Evidence is a GET with 'X-Custom-Header' showing casing preserved; the single-header POST repro and Content-Type before/after are never shown."
+          "evidence": "Evidence is a GET showing X-Custom-Header casing, not the single-header vs two-header POST repro or a Content-Type: application/json result"
         },
         {
           "name": "repo_checks_recorded",
           "grade": "fail",
-          "evidence": "CONTRIBUTING asks that the test suite passes; only 'All tests pass' is given, with no named command or suite."
+          "evidence": "Only 'All tests pass' with no named command or suite, though the contribution docs require the test suite to pass"
         },
         {
           "name": "diff_reviewable",
           "grade": "fail",
-          "evidence": "tests/test_httpie.py adds an unrelated header-casing test that has nothing to do with the #1834 fix."
+          "evidence": "The casing test is an unrelated edit that does not exercise the Content-Type fix"
         },
         {
           "name": "stated_standards",
-          "grade": "fail",
-          "evidence": "No PR template or AI policy, and the issue is referenced, but CONTRIBUTING asks that changes come with tests and the only added test does not exercise this change."
+          "grade": "pass",
+          "evidence": "No PR template or AI policy stated; description links #1834 and no maintainer direction exists in the thread"
         }
       ],
       "error": null,
@@ -545,60 +546,229 @@
     },
     {
       "id": "pkg-15",
-      "verdict": null,
-      "failed_checks": [],
-      "checks": [],
-      "error": "claude exited 1: ",
+      "verdict": "reject",
+      "failed_checks": [
+        "plan_fidelity",
+        "observable_test_evidence",
+        "repo_checks_recorded",
+        "diff_reviewable"
+      ],
+      "checks": [
+        {
+          "name": "plan_fidelity",
+          "grade": "fail",
+          "evidence": "Diff has unplanned import reshuffle, ClientAttributes reformat, and dead count_open_fds; the planned unit test is absent, and the description claims 'per the posted plan' without disclosing this."
+        },
+        {
+          "name": "observable_test_evidence",
+          "grade": "fail",
+          "evidence": "Forced-low control ends 'Expected-after per the plan on both counts' (an expectation, not a captured result); the log shows '64 -> unlimited', which is unexplained; the planned unit test has no result."
+        },
+        {
+          "name": "repo_checks_recorded",
+          "grade": "unclear",
+          "evidence": "'cargo test -p zellij-server passes' is reported, but the docs ask for 'cargo test' and the bundle doesn't say whether the narrower run satisfies that."
+        },
+        {
+          "name": "diff_reviewable",
+          "grade": "fail",
+          "evidence": "Diff contains eprintln!(\"DEBUG accept err...\"), commented-out log/lsof lines, #[allow(dead_code)] count_open_fds, import and format churn, and commit 8ff41d2 'misc cleanups while debugging'."
+        },
+        {
+          "name": "stated_standards",
+          "grade": "pass",
+          "evidence": "No PR template or AI policy exists; the description says 'Fixes #5474' and follows the thread's log-and-100ms-wait direction."
+        }
+      ],
+      "error": null,
       "gold": "reject",
       "category": "unreviewable",
       "calibration": false
     },
     {
       "id": "pkg-16",
-      "verdict": null,
+      "verdict": "accept",
       "failed_checks": [],
-      "checks": [],
-      "error": "claude exited 1: ",
+      "checks": [
+        {
+          "name": "plan_fidelity",
+          "grade": "pass",
+          "evidence": "Diff = aggregated error only when len(succeeded)==0 + image load exits via exit.Error + unit test, matching plan; start path left tolerant and stated as out of scope in description"
+        },
+        {
+          "name": "observable_test_evidence",
+          "grade": "pass",
+          "evidence": "Before: 'minikube image load ./notanimage.tar && echo OK' prints OK; branch run shows error and 'echo $?' = 1; alpine.tar control exits 0 and image present; go test reported passing"
+        },
+        {
+          "name": "repo_checks_recorded",
+          "grade": "pass",
+          "evidence": "Repo facts name no required test command; 'go test ./pkg/minikube/machine/... ./cmd/...' reported as passing"
+        },
+        {
+          "name": "diff_reviewable",
+          "grade": "pass",
+          "evidence": "All hunks (error accumulation, errors.Join return, exit.Error in image.go, TestDoLoadImagesAllFailedReturnsError) tie directly to #23471; no unrelated edits or debug leftovers"
+        },
+        {
+          "name": "stated_standards",
+          "grade": "pass",
+          "evidence": "Description has 'fixes #23471' and before/after examples, title is release-notes style, nirs' start-path direction engaged; no AI policy stated in repo facts"
+        }
+      ],
+      "error": null,
       "gold": "accept",
       "category": "clear-accept",
       "calibration": false
     },
     {
       "id": "pkg-17",
-      "verdict": null,
-      "failed_checks": [],
-      "checks": [],
-      "error": "claude exited 1: ",
+      "verdict": "reject",
+      "failed_checks": [
+        "plan_fidelity",
+        "observable_test_evidence"
+      ],
+      "checks": [
+        {
+          "name": "plan_fidelity",
+          "grade": "fail",
+          "evidence": "Plan's deliverable (2) docs page update is absent from the diff, yet the description says 'Implements the plan on #14893 in full' and 'the reactivity-core documentation now documents the limitation'."
+        },
+        {
+          "name": "observable_test_evidence",
+          "grade": "fail",
+          "evidence": "Dev repro shows the warning, but the planned 'docs render the new note' check has no result or limitation, and the prod-build claim has no output ('Expected-after per the plan')."
+        },
+        {
+          "name": "repo_checks_recorded",
+          "grade": "pass",
+          "evidence": "No required command stated in repo facts; 'pnpm test reactivity passes (511 tests)' is reported, tests added, and the title is conventional-commit style."
+        },
+        {
+          "name": "diff_reviewable",
+          "grade": "pass",
+          "evidence": "Diff is a single guarded warn() in reactive.ts plus two focused tests; no debug leftovers, dead code or unrelated edits."
+        },
+        {
+          "name": "stated_standards",
+          "grade": "pass",
+          "evidence": "No PR template or AI policy exists; the description states the problem, references #14893 and mentions tests, and the title follows the conventional-commit format."
+        }
+      ],
+      "error": null,
       "gold": "reject",
       "category": "silent-drift",
       "calibration": false
     },
     {
       "id": "pkg-18",
-      "verdict": null,
-      "failed_checks": [],
-      "checks": [],
-      "error": "claude exited 1: ",
+      "verdict": "reject",
+      "failed_checks": [
+        "diff_reviewable"
+      ],
+      "checks": [
+        {
+          "name": "plan_fidelity",
+          "grade": "pass",
+          "evidence": "Only behavior change is gating colors on stdout.is_terminal() in src/command.rs plus one test, as planned; description states config use-colors is out of scope, matching the plan."
+        },
+        {
+          "name": "observable_test_evidence",
+          "grade": "pass",
+          "evidence": "Repro `nu --help | cat -v | grep -c '\\^\\['` shows 214 before and 0 after on the branch; tty still colored (screenshot); cargo test passes."
+        },
+        {
+          "name": "repo_checks_recorded",
+          "grade": "pass",
+          "evidence": "CONTRIBUTING names cargo fmt, clippy, cargo test; evidence reports 'cargo test passes; fmt and clippy clean'."
+        },
+        {
+          "name": "diff_reviewable",
+          "grade": "fail",
+          "evidence": "Diff leaves commented-out debug line `// eprintln!(\"help colors: tty={}\", ...)`, rewrites the use/import block, and re-emits unchanged println! lines (fmt churn commit 9c37d51), obscuring the one-line gate."
+        },
+        {
+          "name": "stated_standards",
+          "grade": "pass",
+          "evidence": "Description and User-facing changes sections both present, issue #18850 linked, maintainer's use-colors question addressed as out of scope; repo has no AI policy."
+        }
+      ],
+      "error": null,
       "gold": "reject",
       "category": "unreviewable",
       "calibration": false
     },
     {
       "id": "pkg-19",
-      "verdict": null,
+      "verdict": "accept",
       "failed_checks": [],
-      "checks": [],
-      "error": "claude exited 1: ",
+      "checks": [
+        {
+          "name": "plan_fidelity",
+          "grade": "pass",
+          "evidence": "Only hunk removes the indentation reset in the single-quoted writer's break site plus a round-trip test in operator_style_test.go, matching the plan's bounded scope; description states the same."
+        },
+        {
+          "name": "observable_test_evidence",
+          "grade": "pass",
+          "evidence": "Before (4.53.3) shows dedented closing quote; branch build output shows the issue's input preserved and `diff ... && echo IDENTICAL` prints IDENTICAL."
+        },
+        {
+          "name": "repo_checks_recorded",
+          "grade": "pass",
+          "evidence": "Only repo ask is tests with fixes; `go test ./...` passes (4108 tests) reported and regression test added."
+        },
+        {
+          "name": "diff_reviewable",
+          "grade": "pass",
+          "evidence": "One small emitter change and one test; no debug leftovers, dead code, unrelated cleanup, or formatting churn."
+        },
+        {
+          "name": "stated_standards",
+          "grade": "pass",
+          "evidence": "No PR template or AI policy stated; description references #2819 and includes the requested test."
+        }
+      ],
+      "error": null,
       "gold": "accept",
       "category": "clear-accept",
       "calibration": false
     },
     {
       "id": "pkg-20",
-      "verdict": null,
-      "failed_checks": [],
-      "checks": [],
-      "error": "claude exited 1: ",
+      "verdict": "reject",
+      "failed_checks": [
+        "observable_test_evidence",
+        "stated_standards"
+      ],
+      "checks": [
+        {
+          "name": "plan_fidelity",
+          "grade": "pass",
+          "evidence": "Single hunk `key != .theme and !contains(key)` in Config.zig plus test block matches the plan's one bounded change; GTK and query code untouched."
+        },
+        {
+          "name": "observable_test_evidence",
+          "grade": "fail",
+          "evidence": "Before/after values appear only as inline comments, the text says \"Expected-after per the plan\", and the conditional-pair control is stated only as expected, with no run result or limitation."
+        },
+        {
+          "name": "repo_checks_recorded",
+          "grade": "pass",
+          "evidence": "\"`zig build test` passes (config suite included)\" names the check and its outcome; the repo facts name no other required command."
+        },
+        {
+          "name": "diff_reviewable",
+          "grade": "pass",
+          "evidence": "One small functional hunk with a relevant comment and supporting tests; no debug code, dead code, unrelated cleanup, or formatting churn."
+        },
+        {
+          "name": "stated_standards",
+          "grade": "fail",
+          "evidence": "AI_POLICY requires disclosure of tool and extent of AI use, and the description contains no AI-use disclosure."
+        }
+      ],
+      "error": null,
       "gold": "reject",
       "category": "standards-wall",
       "calibration": false
